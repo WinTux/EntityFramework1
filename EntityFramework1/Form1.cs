@@ -30,6 +30,67 @@ namespace EntityFramework1
                 con.Open();
                 label1.Text = "Estado: Conectado";
 
+                //Ejemplo: crear tabla
+                SqlCommand comando = new SqlCommand();
+                comando.CommandType = CommandType.Text;
+                comando.CommandText = "CREATE TABLE Cliente (nit INT, apellido VARCHAR(40));";
+                comando.Connection = con;
+                comando.ExecuteNonQuery();
+                comando.Dispose();
+
+                //Ejemplo: insertar en tabla
+                comando = new SqlCommand();
+                comando.CommandType = CommandType.Text;
+                comando.CommandText = "INSERT INTO Empleado (idEmpleado, apellido, nombre) VALUES ('2', 'Roca','Sofia');";
+                comando.Connection = con;
+                comando.ExecuteNonQuery();
+                comando.Dispose();
+
+                //Ejemplo: delete en tabla
+                comando = new SqlCommand();
+                comando.CommandType = CommandType.Text;
+                comando.CommandText = "DELETE FROM Cliente WHERE idEmpleado = '2';";
+                comando.Connection = con;
+                comando.ExecuteNonQuery();
+                comando.Dispose();
+
+                //Ejemplo: select en tabla
+                comando = new SqlCommand();
+                comando.CommandType = CommandType.Text;
+                comando.CommandText = "SELECT * FROM Empleado;";
+                comando.Connection = con;
+                SqlDataReader reader = comando.ExecuteReader();
+                string aux = "";
+                while (reader.Read()) {
+                    aux += $"id: {reader.GetString(0)}, nombre completo: {reader.GetString(1)} {reader.GetString(2)}\n";
+                }
+
+                /*
+                
+                []
+                []
+                []
+                []
+                -> 
+                 
+                 
+                 */
+
+                //Ejemplo: select complejo en tabla
+                comando = new SqlCommand();
+                comando.CommandType = CommandType.Text;
+                comando.CommandText = "SELECT nombre, AVG(edad) FROM Empleado GROUP BY APELLIDO;";
+                comando.Connection = con;
+                 reader = comando.ExecuteReader();
+                 aux = "";
+                while (reader.Read())
+                {
+                    aux += $"id: {reader.GetString(0)}, nombre completo: {reader.GetString(1)} {reader.GetString(2)}\n";
+                }
+
+                reader.Close();
+
+                comando.Dispose();
             }
                 
         }
