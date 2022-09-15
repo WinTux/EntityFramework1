@@ -186,6 +186,37 @@ namespace EntityFramework1
         private void button8_Click(object sender, EventArgs e)
         {
             //TODO ejecutar procedimiento almacenado
+            string cadenaDeConexion = @"Server=192.168.1.253\SQLDEVELOPERCQ,1433;Database=Supermercado;User=sa;Password=123456";
+            using (SqlConnection con = new SqlConnection(cadenaDeConexion))
+            {
+                con.Open();
+                SqlCommand comando = new SqlCommand("insertar_empleado", con);
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.Parameters.Add(new SqlParameter("@id","333"));
+                comando.Parameters.Add(new SqlParameter("@nom", "Luis"));
+                comando.Parameters.Add(new SqlParameter("@ap", "Rocha"));
+                int resultado = comando.ExecuteNonQuery();
+                if(resultado > 0)
+                    label1.Text = "Se ingresó un registro";
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            string cadenaDeConexion = @"Server=192.168.1.253;Database=Supermercado;User=sa;Password=123456";
+            using (SqlConnection con = new SqlConnection(cadenaDeConexion))
+            {
+                con.Open();
+                SqlCommand comando = new SqlCommand("getEmpByApellido", con);
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.Parameters.Add(new SqlParameter("@ap", "Rocha"));
+                SqlDataReader reader = comando.ExecuteReader();
+                label1.Text = "";
+                while (reader.Read()) { 
+                    label1.Text += $" nombre: {reader[1]}, apellido: {reader[0]}\n";
+                }
+                    
+            }
         }
     }
 }
